@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (c) 2011-2012 André Bargull
+    Alle Rechte vorbehalten / All Rights Reserved.  Use is subject to license terms.
+
+    <https://github.com/anba/test262-junit>
+
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.github.anba</groupId>
+  <artifactId>test262-junit</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>test262-junit</name>
+  <url>https://github.com/anba/test262-junit</url>
+  <description>JUnit project to run test262</description>
+  <inceptionYear>2011</inceptionYear>
+
+  <licenses>
+    <license>
+      <name>The MIT License (MIT)</name>
+      <url>http://www.opensource.org/licenses/mit-license.php</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://github.com/anba/test262-junit.git</connection>
+    <developerConnection>scm:git:git@github.com:anba/test262-junit.git</developerConnection>
+    <url>http://github.com/anba/test262-junit</url>
+  </scm>
+
+  <issueManagement>
+    <system>github</system>
+    <url>http://github.com/anba/test262-junit/issues</url>
+  </issueManagement>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <currentYear>2012</currentYear>
+    <owner>André Bargull</owner>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>commons-configuration</groupId>
+      <artifactId>commons-configuration</artifactId>
+      <version>1.8</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mozilla</groupId>
+      <artifactId>rhino</artifactId>
+      <version>1.7R4pre-SNAPSHOT</version>
+      <!-- <version>1.7R3-SNAPSHOT</version> -->
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-integration</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-core</artifactId>
+      <version>1.2</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit-dep</artifactId>
+      <version>4.10</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-lang3</artifactId>
+      <version>3.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <source>1.7</source>
+          <target>1.7</target>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>com.mycila.maven-license-plugin</groupId>
+        <artifactId>maven-license-plugin</artifactId>
+        <version>1.10.b1</version>
+        <configuration>
+          <header>${basedir}/src/etc/header.txt</header>
+          <encoding>${project.build.sourceEncoding}</encoding>
+          <basedir>${basedir}/src</basedir>
+          <strictCheck>true</strictCheck>
+          <useDefaultExcludes>true</useDefaultExcludes>
+          <useDefaultMapping>true</useDefaultMapping>
+          <excludes>
+            <exclude>${project.build.directory}/**</exclude>
+          </excludes>
+          <properties>
+            <year>${project.inceptionYear}-${currentYear}</year>
+            <name>${owner}</name>
+            <url>${project.url}</url>
+          </properties>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>verify</phase>
+            <goals>
+              <!-- check, format, remove -->
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.12</version>
+        <configuration>
+          <enableAssertions>true</enableAssertions>
+          <testFailureIgnore>true</testFailureIgnore>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-report-plugin</artifactId>
+        <version>2.12</version>
+        <configuration>
+          <outputName>test262-report</outputName>
+          <showSuccess>false</showSuccess>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
