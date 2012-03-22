@@ -7,13 +7,16 @@
 package com.github.anba.test262.environment;
 
 import static com.github.anba.test262.util.Reflection.__init__;
+import static org.mozilla.javascript.Context.getCurrentContext;
 
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Objects;
 
+import org.mozilla.javascript.Callable;
+import org.mozilla.javascript.Context;
 import org.mozilla.javascript.TopLevel;
+import org.mozilla.javascript.Undefined;
 import org.mozilla.javascript.annotations.JSFunction;
 
 /**
@@ -50,16 +53,9 @@ public abstract class RhinoGlobalObject extends TopLevel implements
      */
     protected abstract String getDescription();
 
-    // TODO: this is a hack...
-    private static final String DEFAULT_ERROR_MSG = "Test case returned non-true value!";
-
     @Override
     @JSFunction("$ERROR")
     public void error(String message) {
-        // intercept $ERROR() calls from runTestCase()
-        if (DEFAULT_ERROR_MSG.equals(message)) {
-            message = Objects.toString(getDescription(), "assertion error");
-        }
         failure(message);
     }
 
@@ -79,5 +75,16 @@ public abstract class RhinoGlobalObject extends TopLevel implements
     @JSFunction("$INCLUDE")
     public void include(String file) throws IOException {
         include(Paths.get(file));
+    }
+
+    @Override
+    @JSFunction("runTestCase")
+    public void runTestCase(Object testcase) {
+        Callable fn = (Callable) testcase;
+        Object value = fn.call(getCurrentContext(), this, Undefined.instance,
+                new Object[] {});
+        if (!Context.toBoolean(value)) {
+            failure(getDescription());
+        }
     }
 }

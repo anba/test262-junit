@@ -34,4 +34,9 @@ public interface GlobalObject {
      * {@code $INCLUDE} function for canonical test262 tests
      */
     void include(String file) throws IOException;
+
+    /**
+     * {@code runTestCase} function for canonical test262 tests
+     */
+    void runTestCase(Object testcase);
 }

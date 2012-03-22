@@ -95,6 +95,8 @@ abstract class RhinoEnv<GLOBAL extends Scriptable & GlobalObject> implements
                     } else {
                         name = error.details();
                     }
+                } else if (error instanceof EvaluatorException) {
+                    name = "SyntaxError";
                 } else {
                     name = "";
                 }
